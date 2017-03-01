@@ -61,9 +61,7 @@ public class MainActivity extends AppCompatActivity {
         data.add("肉类");
         data.add("其他");
         myAdapter= new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_expandable_list_item_1,data);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,11 +127,6 @@ public class MainActivity extends AppCompatActivity {
             }
             if(position==2){
                 rootView = inflater.inflate(R.layout.fragment_order, container, false);
-                TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-                textView.setText(getString(R.string.section_format, position));
-            }
-            if(position==3){
-                rootView = inflater.inflate(R.layout.fragment_stock, container, false);
                 TextView textView = (TextView) rootView.findViewById(R.id.section_label);
                 textView.setText(getString(R.string.section_format, position));
             }
