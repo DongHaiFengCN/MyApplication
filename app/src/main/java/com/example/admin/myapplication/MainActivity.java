@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         data.add("佐料");
         data.add("肉类");
         data.add("其他");
-
         myAdapter= new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_expandable_list_item_1,data);
 
     }
