@@ -1,0 +1,94 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/md_grey_50"
+    android:paddingBottom="25dp"
+    tools:context="com.example.admin.myapplication.MainActivity$PlaceholderFragment">
+    <LinearLayout
+        android:id="@+id/info"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cart"
+        >
+
+        <ListView
+            android:id="@+id/left"
+            android:layout_width="110dp"
+            android:gravity="center"
+            android:background="@color/md_grey_100"
+            android:layout_height="match_parent" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/menu_item_press"/>
+        <ListView
+            android:id="@+id/right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@drawable/drawable"
+        android:alpha="100"
+        android:layout_above="@+id/cart"
+        />
+    <RelativeLayout
+        android:id="@+id/cart"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="85dp"
+        android:paddingBottom="30dp"
+        android:background="@color/md_grey_100"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+        <RelativeLayout
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true">
+
+            <ImageView
+                android:id="@+id/cartimage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/ic_shoppingcart"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:text="￥5000"
+                android:textColor="@color/orange_color"
+                android:layout_width="85dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/textView"
+                android:textSize="18sp"
+                android:layout_alignTop="@+id/cartimage"
+                android:layout_alignBottom="@+id/cartimage"
+                android:layout_toEndOf="@+id/cartimage" />
+
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="提交"
+            android:textSize="18sp"
+            android:textColor="@color/colorText"
+            android:background="@color/orange_color"
+            android:id="@+id/imageView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
+</RelativeLayout>

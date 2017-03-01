@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">校园餐厅</string>
+    <string name="action_settings">设置</string>
+    <string name="action_message">留言</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="menu_edit">编辑</string>
+    <string name="menu_enter">完成</string>
+    <string name="menu_del">删除</string>
+    <string name="menu_sett">结算</string>
+
+</resources>
