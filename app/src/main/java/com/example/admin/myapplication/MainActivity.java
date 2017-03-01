@@ -122,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
 
                 listViewleft.setAdapter(myAdapter);
 
-
-
             }
             if(position==2){
                 rootView = inflater.inflate(R.layout.fragment_order, container, false);
