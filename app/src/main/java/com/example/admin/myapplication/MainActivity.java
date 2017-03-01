@@ -159,10 +159,9 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "首页";
+                    return "采购";
                 case 1:
                     return "订单";
-
             }
             return null;
         }
