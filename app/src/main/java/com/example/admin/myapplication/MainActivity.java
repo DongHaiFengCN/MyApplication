@@ -1,5 +1,6 @@
 package com.example.admin.myapplication;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,13 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    static ArrayAdapter myAdapter = null;
+    static LeftAdapter myAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +52,20 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        List<String> data = new ArrayList<String>();
+        String [] item=new String[5];
+        item[0]="蔬菜";
+        item[1]="水果";
+        item[2]="佐料";
+        item[3]="肉类";
+        item[4]="其他";
+        myAdapter=new LeftAdapter(this,item);
+/*        List<String> data = new ArrayList<String>();
         data.add("蔬菜");
         data.add("水果");
         data.add("佐料");
         data.add("肉类");
         data.add("其他");
-        myAdapter= new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_expandable_list_item_1,data);
+        myAdapter= new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_expandable_list_item_1,data);*/
     }
 
     @Override
@@ -119,9 +124,7 @@ public class MainActivity extends AppCompatActivity {
             if(position==1){
                 rootView = inflater.inflate(R.layout.fragment_home, container, false);
                 ListView listViewleft=(ListView)rootView.findViewById(R.id.left);
-
                 listViewleft.setAdapter(myAdapter);
-
             }
             if(position==2){
                 rootView = inflater.inflate(R.layout.fragment_order, container, false);
@@ -129,6 +132,51 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText(getString(R.string.section_format, position));
             }
             return rootView;
+        }
+    }
+    public class LeftAdapter extends BaseAdapter {
+        private Context context; //运行上下文
+        private String[]listItems; //商品信息集合
+        private LayoutInflater listContainer;
+        public LeftAdapter(Context context,String[]listItems){
+            this.context=context;
+            this.listItems=listItems;
+
+        }
+        @Override
+        public int getCount() {
+            return listItems.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            listContainer = LayoutInflater.from(context);
+            ListItemView listItemView=null;
+              if(convertView==null){
+                  listItemView=new ListItemView();
+                  convertView = listContainer.inflate(R.layout.left_listview, null);
+                  listItemView.tv_title=(TextView)convertView.findViewById(R.id.title);
+                  convertView.setTag(listItemView);
+              }
+              else{
+                  listItemView = (ListItemView)convertView.getTag();
+              }
+            listItemView.tv_title.setText(listItems[position]);
+            return convertView;
+        }
+        class ListItemView {
+          TextView tv_title;
+
         }
     }
     /**
