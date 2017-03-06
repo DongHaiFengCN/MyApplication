@@ -1,94 +1,102 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/md_grey_50"
-    android:paddingBottom="25dp"
     tools:context="com.example.admin.myapplication.MainActivity$PlaceholderFragment">
     <LinearLayout
         android:id="@+id/info"
+        android:layout_weight="10"
         android:orientation="horizontal"
+        android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_above="@+id/cart"
         >
 
         <ListView
             android:id="@+id/left"
-            android:layout_width="110dp"
-            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:background="@color/md_grey_100"
             android:layout_height="match_parent" />
-
-        <View
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
-            android:background="@color/menu_item_press"/>
+        >
         <ListView
             android:id="@+id/right"
-            android:layout_width="match_parent"
+            android:layout_weight="3"
+            android:layout_width="0dp"
             android:layout_height="match_parent" />
     </LinearLayout>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@drawable/drawable"
+        android:background="@drawable/drawable_item"
         android:alpha="100"
         android:layout_above="@+id/cart"
         />
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/cart"
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="85dp"
-        android:paddingBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="55dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
         android:background="@color/md_grey_100"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
-        <RelativeLayout
-            android:layout_width="130dp"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true">
+>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
 
-            <ImageView
-                android:id="@+id/cartimage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@mipmap/ic_shoppingcart"
-                android:layout_marginStart="16dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true" />
+            android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/cartimage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_shoppingcart"
+            android:layout_marginLeft="16dp"
+       />
             <TextView
-                android:text="￥5000"
-                android:textColor="@color/orange_color"
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
+                android:text="5"
+                android:textColor="@color/md_white_1000"
                 android:gravity="center"
+                android:background="@drawable/drawable_design_red_point"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:textSize="12sp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="￥365"
+                android:textColor="@color/orange_color"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:id="@+id/textView"
                 android:textSize="18sp"
-                android:layout_alignTop="@+id/cartimage"
-                android:layout_alignBottom="@+id/cartimage"
-                android:layout_toEndOf="@+id/cartimage" />
+                />
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:text="提交"
+                android:textSize="18sp"
+                android:layout_gravity=""
+                android:textColor="@color/colorText"
+                android:background="@color/orange_color"
+                android:id="@+id/imageView"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </LinearLayout>
+    </LinearLayout>
 
 
-        </RelativeLayout>
-
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:text="提交"
-            android:textSize="18sp"
-            android:textColor="@color/colorText"
-            android:background="@color/orange_color"
-            android:id="@+id/imageView"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
-
-
-    </RelativeLayout>
-</RelativeLayout>
+</LinearLayout>
