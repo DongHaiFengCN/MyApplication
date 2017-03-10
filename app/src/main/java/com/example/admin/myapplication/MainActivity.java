@@ -1,6 +1,9 @@
 package com.example.admin.myapplication;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,41 +12,60 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    static LeftAdapter myAdapter = null;
+    static LeftAdapter myleftAdapter = null;
+    static ArrayAdapter<String> l;
+    static int num=0;
+    static List<Goods> goodsList=new ArrayList<Goods>();
+    static ListView listViewleft;
+    static StickyListHeadersListView listViewright;
+    static String[]listItems=new String[5];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //透明状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getApplicationContext().getResources().getColor(R.color.orange_color));
+        }
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -52,22 +74,31 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        String [] item=new String[5];
-        item[0]="蔬菜";
-        item[1]="水果";
-        item[2]="佐料";
-        item[3]="肉类";
-        item[4]="其他";
-        myAdapter=new LeftAdapter(this,item);
-/*        List<String> data = new ArrayList<String>();
-        data.add("蔬菜");
-        data.add("水果");
-        data.add("佐料");
-        data.add("肉类");
-        data.add("其他");
-        myAdapter= new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_expandable_list_item_1,data);*/
-    }
 
+        listItems[0]="蔬菜";
+        listItems[1]="肉类";
+        listItems[2]="水果";
+        listItems[3]="佐料";
+        listItems[4]="工具";
+     /*   l=new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, listItems);*/
+       myleftAdapter=new LeftAdapter(this,listItems);
+    }
+    /**
+     * 加载本地图片
+     * @param url
+     * @return
+     */
+    public static Bitmap getLoacalBitmap(String url) {
+        try {
+            FileInputStream fis = new FileInputStream(url);
+            return BitmapFactory.decodeStream(fis);  ///把流转化为Bitmap图片
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -116,20 +147,80 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView=null ;
-            int position=getArguments().getInt(ARG_SECTION_NUMBER);
+            final int position=getArguments().getInt(ARG_SECTION_NUMBER);
+            List<Goods> goodsList=new ArrayList<>();
 
             if(position==1){
+                RightAdapter rightadapter;
+
                 rootView = inflater.inflate(R.layout.fragment_home, container, false);
-                ListView listViewleft=(ListView)rootView.findViewById(R.id.left);
-                listViewleft.setAdapter(myAdapter);
+                final StickyListHeadersListView stickyListHeadersListView = (StickyListHeadersListView) rootView.findViewById(R.id.right);
+                listViewleft=(ListView)rootView.findViewById(R.id.left);
+                listViewleft.setAdapter(myleftAdapter);
+                //左侧点击事件监听 z
+                listViewleft.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        myleftAdapter.changeSelected(position);
+                        stickyListHeadersListView.setSelection(position*10);
+                    }
+                });
+                //初始化
+
+               //模拟初始化数据
+
+                 for(int i=0;i<5;i++){
+                     for(int j=0;j<10;j++){
+                         Goods goods=new Goods();
+                         goods.setHeadId(i);
+                         goods.setHeadName(listItems[i]);
+                         goods.setName(j+"");
+                         goods.setImageId(R.mipmap.ic_launcher);
+                         goodsList.add(goods);
+                     }
+                 }
+                rightadapter=new RightAdapter(getActivity(),goodsList);
+
+
+         /*       stickyListHeadersListView.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
+                    @Override
+                    public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
+                        myleftAdapter.changeSelected((int)headerId);
+                        Log.e("点击的标题",headerId+"");
+                    }
+                });*/
+                stickyListHeadersListView.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
+                    @Override
+                    public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
+                        myleftAdapter.changeSelected((int)headerId);
+                        Log.e("点击的标题",headerId+"");
+                    }
+                });
+                stickyListHeadersListView.setOnStickyHeaderChangedListener(new StickyListHeadersListView.OnStickyHeaderChangedListener() {
+                    @Override
+                    public void onStickyHeaderChanged(StickyListHeadersListView l, View header, int itemPosition, long headerId) {
+                        myleftAdapter.changeSelected((int)headerId);
+                        Log.e("滑动的标题",headerId+"");
+                    }
+                });
+              //设置内容的点击事件
+                stickyListHeadersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Toast.makeText(getActivity(), "i:" + i, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
+                stickyListHeadersListView.setAdapter(rightadapter);
+
             }
             if(position==2){
                 rootView = inflater.inflate(R.layout.fragment_order, container, false);
-                TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-                textView.setText(getString(R.string.section_format, position));
+
             }
             return rootView;
         }
@@ -137,46 +228,56 @@ public class MainActivity extends AppCompatActivity {
     public class LeftAdapter extends BaseAdapter {
         private Context context; //运行上下文
         private String[]listItems; //商品信息集合
-        private LayoutInflater listContainer;
+        private LayoutInflater listContainerLeft;
+        private int mSelect = 0;   //选中项
         public LeftAdapter(Context context,String[]listItems){
             this.context=context;
             this.listItems=listItems;
-
         }
         @Override
         public int getCount() {
             return listItems.length;
         }
-
         @Override
         public Object getItem(int position) {
             return null;
         }
-
         @Override
         public long getItemId(int position) {
             return 0;
         }
-
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            listContainer = LayoutInflater.from(context);
+            listContainerLeft = LayoutInflater.from(context);
             ListItemView listItemView=null;
               if(convertView==null){
                   listItemView=new ListItemView();
-                  convertView = listContainer.inflate(R.layout.left_listview, null);
+                  convertView = listContainerLeft.inflate(R.layout.left_listview, null);
                   listItemView.tv_title=(TextView)convertView.findViewById(R.id.title);
+                  listItemView.imageView=(ImageView)convertView.findViewById(R.id.imageView);
                   convertView.setTag(listItemView);
               }
               else{
                   listItemView = (ListItemView)convertView.getTag();
               }
+              if(mSelect==position){
+                convertView.setBackgroundResource(R.color.md_grey_50);  //选中项背景
+                  listItemView.imageView.setVisibility(View.VISIBLE);
+              }else{
+                convertView.setBackgroundResource(R.color.md_grey_100);  //其他项背景
+                  listItemView.imageView.setVisibility(View.GONE);
+              }
             listItemView.tv_title.setText(listItems[position]);
             return convertView;
         }
-        class ListItemView {
-          TextView tv_title;
 
+        public void changeSelected(int positon){ //刷新方法
+                mSelect = positon;
+                notifyDataSetChanged();
+        }
+        class ListItemView {
+            TextView tv_title;
+            ImageView imageView;
         }
     }
     /**
